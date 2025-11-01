@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>LikaHang's Portfolio</title>
+    <link rel="stylesheet" href="https://public.codepenassets.com/css/normalize-5.0.0.min.css">
+<link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <main class="portfolio-container">
+  <h1 class="sr-only">ATLASTOR</h1>
+  <ul class="project-list" role="list">
+    <!-- 內容將由 script.js 動態填入 -->
+  </ul>
+</main>
+
+<div class="background-image" id="backgroundImage" role="img" aria-hidden="true"></div>
+
+<aside class="corner-elements">
+  <div class="corner-item top-left">
+    <div class="corner-square" aria-hidden="true"></div>
+  </div>
+  <nav class="corner-item top-right">
+    <a href="YOUR_SPOTIFY_LINK_HERE">Spotify</a> | <!-- 請替換成您的 Spotify 連結 -->
+    <a href="mailto:YOUR_EMAIL_HERE">Email</a> | <!-- 請替換成您的 Email -->
+    <a href="YOUR_X_LINK_HERE" target="_blank" rel="noopener">X</a> <!-- 請替換成您的 X/Twitter 連結 -->
+  </nav>
+  <div class="corner-item bottom-left">43.9250° N, 19.5530° E</div>
+  <time class="corner-item bottom-right" id="current-time"></time>
+</aside>
+    <script src='https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js'></script>
+<script src="./config.js"></script> <!-- 載入由 GitHub Actions 產生的設定檔 -->
+<script  src="./script.js"></script>
+
+  </body>
+  
+</html>
