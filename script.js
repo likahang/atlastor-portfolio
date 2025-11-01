@@ -107,7 +107,11 @@ class GithubPortfolio {
     item.target = "_blank";
     item.rel = "noopener noreferrer";
     item.className = "project-item";
-    item.dataset.image = `https://assets.codepen.io/7558/portrait-fashion-00${(index % 8) + 1}.jpg`;
+
+    // 改善建議：動態載入每個專案自己的預覽圖
+    // 您需要在每個 GitHub 專案的 main 分支根目錄下放置一張名為 'preview.png' 的圖片
+    const previewImageUrl = `https://raw.githubusercontent.com/${this.username}/${repo.name}/main/preview.png`;
+    item.dataset.image = previewImageUrl;
 
     const number = (index + 1).toString().padStart(2, '0');
     const description = repo.description || repo.name;
