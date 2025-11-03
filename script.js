@@ -103,7 +103,9 @@ class GithubPortfolio {
 
   createProjectElement(repo, index) {
     const item = document.createElement("a");
-    item.href = repo.html_url;
+    // 優先使用 repo.homepage (對應 GitHub 上的 Website 欄位)，
+    // 如果為空，則退回使用 repo.html_url (專案的 GitHub 頁面)。
+    item.href = repo.homepage || repo.html_url;
     item.target = "_blank";
     item.rel = "noopener noreferrer";
     item.className = "project-item";
