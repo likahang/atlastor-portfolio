@@ -3,10 +3,9 @@
 name: Deploy to GitHub Pages
 
 on:
-  # 在推送到 `main` 分支時觸發
-  push:
-    branches:
-      - main
+  # 當新的 Release 發佈時觸發
+  release:
+    types: [published]
 
   # 允許手動觸發此工作流程
   workflow_dispatch:
