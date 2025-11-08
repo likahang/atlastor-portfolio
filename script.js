@@ -26,7 +26,9 @@ class GithubPortfolio {
       console.log('📊 倉庫詳情:', repos.map(r => ({
         name: r.name,
         private: r.private,
-        visibility: r.private ? '私人' : '公開'
+        visibility: r.private ? '私人' : '公開',
+        // 預先準備好版本欄位
+        latest_release: { tag_name: 'N/A' } 
       })));
       
       this.renderProjects(repos);
@@ -93,12 +95,31 @@ class GithubPortfolio {
       return;
     }
 
-    repos.forEach((repo, index) => {
-      const projectItem = this.createProjectElement(repo, index);
-      this.projectList.appendChild(projectItem);
-    });
+    // 建立一個 Promise 陣列來獲取所有專案的最新版本
+    const fetchVersionPromises = repos.map(repo => this.fetchLatestRelease(repo));
 
-    console.log('✅ 渲染完成，共', repos.length, '個專案');
+    // 等待所有版本資訊都回來
+    Promise.all(fetchVersionPromises).then(() => {
+      repos.forEach((repo, index) => {
+        const projectItem = this.createProjectElement(repo, index);
+        this.projectList.appendChild(projectItem);
+      });
+      console.log('✅ 渲染完成，共', repos.length, '個專案');
+    });
+  }
+
+  async fetchLatestRelease(repo) {
+    // 如果專案沒有發布過 Release，API 會回傳 404，這是正常行為
+    // 我們不需要顯示錯誤，只需保持預設值即可
+    try {
+      const url = `https://api.github.com/repos/${repo.owner.login}/${repo.name}/releases/latest`;
+      const response = await fetch(url, { headers: this.fetchRepositories.headers });
+      if (response.ok) {
+        repo.latest_release = await response.json();
+      }
+    } catch (error) {
+      // 忽略單一專案獲取版本失敗的錯誤
+    }
   }
 
   createProjectElement(repo, index) {
@@ -119,7 +140,7 @@ class GithubPortfolio {
     const description = repo.description || repo.name;
     const language = repo.language || "N/A";
     const visibility = repo.private ? "私人" : "公開";
-    const version = "1.0";
+    const version = repo.latest_release?.tag_name || "N/A";
     const date = new Date(repo.pushed_at).toLocaleDateString('en-CA');
 
     item.innerHTML = `
