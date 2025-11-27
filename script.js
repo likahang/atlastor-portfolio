@@ -103,6 +103,9 @@ class GithubPortfolio {
         this.projectList.appendChild(projectItem);
       });
       console.log('✅ 渲染完成，共', repos.length, '個專案');
+      
+      // 在這裡初始化動畫，確保所有 .project-item 元素都已存在
+      new AnimationManager();
     });
   }
 
@@ -425,8 +428,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const portfolio = new GithubPortfolio(CONFIG.githubUsername, CONFIG.repoCount);
   await portfolio.loadProjects();
-
-  const animationManager = new AnimationManager();
 
   const timeDisplay = new TimeDisplay("current-time");
   timeDisplay.start();
