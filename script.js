@@ -10,6 +10,7 @@ class GithubPortfolio {
     this.username = username;
     this.count = count;
     this.projectList = document.querySelector(".project-list");
+    this.apiHeaders = { 'Accept': 'application/vnd.github.v3+json' }; // 將 headers 提升為實例屬性
   }
 
   async loadProjects() {
@@ -41,14 +42,11 @@ class GithubPortfolio {
   async fetchRepositories() {
     // 判斷使用哪個 API 端點
     let apiUrl;
-    const headers = {
-      'Accept': 'application/vnd.github.v3+json',
-    };
 
     // 檢查並使用 Token
     if (window.LOCAL_CONFIG && window.LOCAL_CONFIG.githubToken) {
       const token = window.LOCAL_CONFIG.githubToken;
-      headers['Authorization'] = `token ${token}`;
+      this.apiHeaders['Authorization'] = `token ${token}`; // 設定實例屬性
       // 使用認證端點，可以獲取私有倉庫
       apiUrl = `https://api.github.com/user/repos?sort=pushed&per_page=${this.count}&affiliation=owner`;
       console.log('🔑 使用 GitHub Token (前8字符):', token.substring(0, 8) + '...');
@@ -60,9 +58,9 @@ class GithubPortfolio {
     }
 
     console.log('📡 請求 URL:', apiUrl);
-    console.log('📋 請求標頭:', headers);
+    console.log('📋 請求標頭:', this.apiHeaders);
 
-    const response = await fetch(apiUrl, { headers });
+    const response = await fetch(apiUrl, { headers: this.apiHeaders });
     
     console.log('📥 響應狀態:', response.status, response.statusText);
     
@@ -113,7 +111,7 @@ class GithubPortfolio {
     // 我們不需要顯示錯誤，只需保持預設值即可
     try {
       const url = `https://api.github.com/repos/${repo.owner.login}/${repo.name}/releases/latest`;
-      const response = await fetch(url, { headers: this.fetchRepositories.headers });
+      const response = await fetch(url, { headers: this.apiHeaders }); // 使用儲存的 apiHeaders
       if (response.ok) {
         repo.latest_release = await response.json();
       }
