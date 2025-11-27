@@ -131,7 +131,8 @@ class GithubPortfolio {
 
     // 改善建議：動態載入每個專案自己的預覽圖
     // 您需要在每個 GitHub 專案的 main 分支根目錄下放置一張名為 'preview.png' 的圖片
-    const previewImageUrl = `https://raw.githubusercontent.com/${this.username}/${repo.name}/main/preview.png`;
+    // 使用 repo.default_branch 來動態獲取預設分支名稱 (例如 'main' 或 'master')
+    const previewImageUrl = `https://raw.githubusercontent.com/${this.username}/${repo.name}/${repo.default_branch}/preview.png`;
     item.dataset.image = previewImageUrl;
 
     const number = (index + 1).toString().padStart(2, '0');
